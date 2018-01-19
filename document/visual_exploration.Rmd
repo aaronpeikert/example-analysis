@@ -1,0 +1,32 @@
+---
+title: "Analysis"
+author: "Aaron Peikert"
+date: "19 January 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+if(!require("here"))install.packages("here")
+knitr::read_chunk(here::here("scripts", "packages.R"))
+knitr::read_chunk(here::here("scripts", "load.R"))
+```
+
+```{r packages}
+```
+
+```{r load, message=FALSE}
+```
+
+```{r}
+movies %>% filter(!is.na(budget)) %>% ggplot(aes(budget, votes)) + geom_point(alpha = .1) + theme_minimal()
+movies %>% filter(!is.na(budget)) %>% ggplot(aes(budget, votes)) +
+  geom_point(alpha = .3) +
+  scale_y_log10() +
+  theme_minimal()
+movies %>% filter(!is.na(budget)) %>% ggplot(aes(budget, votes)) +
+  geom_point(alpha = .3) +
+  scale_y_log10() +
+  scale_x_log10() +
+  theme_minimal()
+```
+
