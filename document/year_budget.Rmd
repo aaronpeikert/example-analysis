@@ -21,4 +21,28 @@ knitr::read_chunk(here::here("scripts", "load.R"))
 movies %>% filter(!is.na(budget)) %>% ggplot(aes(year, budget)) + geom_point(alpha = .40)
 ```
 
-Der Preis des teuersten Films steigt exponentiell mit den Jahren.
+Der Preis des teuersten Films steigt exponentiell ab dem Jahr 2025 mit den Jahren.
+
+Let's investigate this Hypothisis more by plotting only the most expensive film per Year and apply a log tranformation.
+
+```{r}
+movies %>%
+  filter(!is.na(budget)) %>% 
+  filter(!budget == 0) %>%
+  group_by(year) %>%
+  summarise(budget_max = max(budget)) %>%
+  ggplot(aes(year, budget_max)) + geom_point(alpha = .40) + scale_y_log10()
+```
+
+We see this Hypothis helds true at least from 1925.
+Now lets look at the general trend by including min, median and max of each year.
+
+```{r}
+movies %>%
+  filter(!is.na(budget)) %>% 
+  filter(!budget == 0) %>%
+  group_by(year) %>%
+  summarise(min = min(budget), median = median(budget), max = max(budget)) %>%
+  gather(stat, budget, -year) %>% 
+  ggplot(aes(year, budget, color = stat)) + geom_point(alpha = .40) + scale_y_log10()
+```
