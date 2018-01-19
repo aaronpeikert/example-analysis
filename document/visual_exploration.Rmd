@@ -29,4 +29,5 @@ movies %>% filter(!is.na(budget)) %>% ggplot(aes(budget, votes)) +
   scale_x_log10() +
   theme_minimal()
 ```
+Zwischen budget und votes besteht ein doppelt-logarithmischer Zusammenhang. 
 
