@@ -28,5 +28,17 @@ movies %>% filter(!is.na(budget)) %>% ggplot(aes(budget, votes)) +
   scale_y_log10() +
   scale_x_log10() +
   theme_minimal()
+movies %>% filter(!is.na(budget)) %>% ggplot(aes(budget, votes, color = rating > mean(rating))) +
+  geom_point(alpha = .3) +
+  scale_y_log10() +
+  scale_x_log10() +
+  theme_minimal()
+movies %>% filter(!is.na(budget)) %>% mutate(rating_bin = if_else(rating > mean(rating), "good", "bad")) %>% ggplot(aes(budget, votes, color = as.logical(Short))) +
+  geom_point(alpha = .3) +
+  facet_wrap(~ rating_bin) +
+  scale_y_log10() +
+  scale_x_log10() +
+  theme_minimal()
+movies %>% mutate(budget = !is.na(budget)) %>% ggplot(aes(budget, votes)) + geom_violin() + scale_y_log10()
 ```
 
