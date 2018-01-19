@@ -23,7 +23,7 @@ movies %>% filter(!is.na(budget)) %>% ggplot(aes(year, budget)) + geom_point(alp
 
 Der Preis des teuersten Films steigt exponentiell ab dem Jahr 2025 mit den Jahren.
 
-Let's investigate this Hypothisis more by plotting only the most expensive film per Year and apply a log tranformation.
+Let's investigate this Hypothesis more by plotting only the most expensive film per Year and apply a log tranformation.
 
 ```{r}
 movies %>%
@@ -46,3 +46,30 @@ movies %>%
   gather(stat, budget, -year) %>% 
   ggplot(aes(year, budget, color = stat)) + geom_point(alpha = .40) + scale_y_log10()
 ```
+
+```{r}
+movies %>%  
+  filter (length <= 2000) %>% 
+  group_by(year) %>% 
+  summarise(length_max = max(length)) %>%
+  ggplot(aes(year, length_max)) + geom_point(shape = 5) + geom_point(shape = 22) +
+  geom_smooth(method = 'lm', colour = "blue", se = FALSE) + theme_minimal() + geom_smooth(colour = "darkseagreen", se=FALSE)
+```
+Die maximale Länge der Filme steigt (nach Entfernen der Ausreißer) linear mit den Jahren.
+```{r}
+movies %>% 
+  filter(length<300) %>% 
+  group_by(length) %>% 
+  summarise(votes_max = max(votes)) %>% 
+  ggplot(aes(length, votes_max)) + geom_point() + theme_minimal()
+```  
+lustiger (parabelförmiger) Zusammenhang zwischen Länge und maximaler Anzahl der Votes
+
+```{r}
+movies$Animation <- as.factor(movies$Animation)
+movies %>% 
+  ggplot(aes(Animation, rating)) + geom_violin() + theme_minimal()
+```  
+Animierte Filme bekommen seltener schlechte Ratings als nicht animierte.
+
+Kann ich dieses as.factor irgendwie in den Befehl packen anstatt vorne dran?
